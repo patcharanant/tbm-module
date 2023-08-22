@@ -8,7 +8,7 @@
  
 ```golang
  import (
-	tbmmodule "github.com/patcharanant/tbm-module"
+	"github.com/patcharanant/tbm-module"
 )
 ```
 
