@@ -4,7 +4,7 @@
 
  ## Get Started
 
- Import tmbmodule to your package
+ Import tbmmodule to your package
  
 ```golang
  import (
