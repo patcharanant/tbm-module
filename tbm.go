@@ -52,35 +52,43 @@ func (module Tbm) Broadcast(payload TransactionPayload) (TxHash, error) {
 
 func (module Tbm) Monitor(hash TxHash, callback func(string)) {
 	statusChan := make(chan string)
+	timeout := time.After(time.Second * 3600)
 	go func() {
 		defer close(statusChan)
 		var currentStatus string
 		for {
-			resp, err := http.Get(fmt.Sprintf("%s/check/%s", module.Provider, hash.Hash))
-			if err != nil {
-				statusChan <- "ERROR"
+			select {
+			case <-timeout:
+				callback("TIMEOUT")
 				return
-			}
-			defer resp.Body.Close()
+			default:
+				resp, err := http.Get(fmt.Sprintf("%s/check/%s", module.Provider, hash.Hash))
+				if err != nil {
+					statusChan <- "ERROR"
+					return
+				}
+				defer resp.Body.Close()
 
-			txStatusResp := TransactionStatus{}
-			err = json.NewDecoder(resp.Body).Decode(&txStatusResp)
-			if err != nil {
-				statusChan <- "ERROR"
-				return
-			}
-			status := txStatusResp.Status
-			if currentStatus != status {
-				currentStatus = status
-				statusChan <- status
-			}
+				txStatusResp := TransactionStatus{}
+				err = json.NewDecoder(resp.Body).Decode(&txStatusResp)
+				if err != nil {
+					statusChan <- "ERROR"
+					return
+				}
+				status := txStatusResp.Status
+				if currentStatus != status {
+					currentStatus = status
+					statusChan <- status
+				}
 
-			if status == "CONFIRMED" || status == "DNE" || status == "FAILED" {
-				return
+				if status == "CONFIRMED" || status == "DNE" || status == "FAILED" {
+					return
+				}
+				time.Sleep(time.Second * 4)
 			}
-			time.Sleep(time.Second * 4)
 		}
 	}()
+
 	for status := range statusChan {
 		callback(status)
 	}

@@ -31,11 +31,12 @@ func main() {
 	tbm.Monitor(txHash, func(status string) {
 		if status == "CONFIRMED" {
 			fmt.Println("Transaction confirmed!")
-			// You can perform additional actions here upon confirmation
 		} else if status == "DNE" {
 			fmt.Println("Transaction does not exist.")
 		} else if status == "ERROR" {
 			fmt.Println("An error occurred.")
+		} else if status == "Failed" {
+			fmt.Println("Transaction Failed.")
 		} else if status == "TIMEOUT" {
 			fmt.Println("Monitoring timed out.")
 		} else {
