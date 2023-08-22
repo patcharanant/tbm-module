@@ -59,6 +59,7 @@ txHash, err := tbm.Broadcast(payload)
 ### Monitor()
 
 Monitor transaction status. provide txHash from Broadcast function or create with tbmmodule.TxHash
+provide callback function when status change (ex. from pending to confirm will trigger a callback function)
 
 
 ```golang
