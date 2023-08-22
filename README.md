@@ -27,7 +27,9 @@ tbm, err := tbmmodule.Initiate(url)
 
 ```
 
-### Create TransactionPayload
+### TransactionPayload
+
+create TrasactionPayload of the transaction you want to broadcast
 
 ```golang
 
@@ -65,6 +67,7 @@ tbm.Monitor(txHash, LogStatus) //txHash from Broadcast function
 
 //OR
 
-txHash = tbmmodule.TxHash{Hash:"your hash here"}
+manualTxHash = tbmmodule.TxHash{Hash:"your hash here"}
+tbm.Monitor(manualTxHash, LogStatus)
 
 ```
