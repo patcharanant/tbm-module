@@ -69,6 +69,6 @@ tbm.Monitor(txHash, LogStatus) //txHash from Broadcast function
 //OR
 
 manualTxHash = tbmmodule.TxHash{Hash:"your hash here"}
-tbm.Monitor(manualTxHash, LogStatus)
+tbm.Monitor(manualTxHash, callback)
 
 ```
