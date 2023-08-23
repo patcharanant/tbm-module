@@ -59,7 +59,7 @@ func (module Tbm) Monitor(hash TxHash, callback func(string)) {
 		for {
 			select {
 			case <-timeout:
-				callback("TIMEOUT")
+				statusChan <- "TIMEOUT"
 				return
 			default:
 				resp, err := http.Get(fmt.Sprintf("%s/check/%s", module.Provider, hash.Hash))
